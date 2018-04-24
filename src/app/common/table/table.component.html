@@ -1,0 +1,250 @@
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/css-spinning-spinners/1.1.0/load5.css" />
+<!-- tool bar -->
+<div id="toolbar">
+  
+  <!-- Add a field -->
+  <div class="dropdown">
+      <button class="toolbarBtn" (click)="userAddField()">
+          <i class="fa fa-plus-square" aria-hidden="true"></i>&nbsp;Add a field
+      </button>
+  </div>
+
+  <!-- Row Height -->
+  <div class="dropdown ">
+      <button class="toolbarBtn" (click)="switchShowRowHeight()">
+        <i class="fa fa-align-justify" aria-hidden="true"></i>&nbsp;Row Height</button>
+      <div class="dropdown-content"
+        [style.display]="showRowHeight ? 'block' : 'none'"
+        style="height:80px; min-width:110px; width:110px;">
+        <div class="basicPadding pointer fontSize16" (click)="setRowHeight('20px')">Short</div>
+        <div class="basicPadding pointer fontSize16" (click)="setRowHeight('50px')">Medium</div>
+        <div class="basicPadding pointer fontSize16" (click)="setRowHeight('80px')">Tall</div>
+      </div>
+  </div>
+
+  <!-- Sort By Field-->
+  <div class="dropdown basicPadding">
+      <button (click)="switchShowSortByField()" class="toolbarBtn">
+        <i class="fa fa-sort-amount-asc" aria-hidden="true"></i>&nbsp;Sort By Field</button>
+      <div [style.display]="showSortByField ? 'block' : 'none'" class="dropdown-content">
+        <div class="basicPadding">
+          <table>
+            <tr>
+              <td><i *ngIf="tableSetting.sortType==='asc'" class="material-icons iconButton" style="font-size:16px">check</i></td>
+              <td><div class="pointer fontSize16" (click)="setSortType('asc')">Ascending</div></td>
+            </tr>
+            <tr>
+                <td><i *ngIf="tableSetting.sortType==='desc'" class="material-icons iconButton" style="font-size:16px">check</i></td>
+                <td><div class="pointer fontSize16" (click)="setSortType('desc')">Descending</div></td>
+            </tr>
+          </table>
+        </div>
+        <hr>
+        <div *ngFor="let field of fields" class="padding10">
+          <app-field-label 
+            [field]="field"
+            [showTool]="false"
+            [useSort]="true"
+            [margin]="'5px'"
+            [headerWidth]="'auto'"
+            (sort)="userSortByField($event)">
+          </app-field-label>
+        </div>
+      </div>
+  </div>
+
+  <!-- Filter By Value-->
+  <div class="dropdown basicPadding">
+      <button (click)="switchShowFilterByValue()" class="toolbarBtn">
+        <i class="fa fa-filter" aria-hidden="true"></i>&nbsp;Filter By Value</button>
+      <div [style.display]="showFilterByValue ? 'block' : 'none'" class="dropdown-content">
+        <div class="basicPaddingAll" style="width:250px; max-width:500px">
+            <table >
+                <tr>
+                  <td style="width:50px; font-size:16px;">Field: </td>
+                  <td class="basicPaddingAll">
+                    <select class="form-control"
+                      style="min-width:180px; max-width:300px; font-size:16px;" 
+                      [(ngModel)]="filterField" 
+                      (change)="showAllRecords()">
+                      <option *ngFor="let field of fields" [ngValue]="field"> {{ field.fieldName }} </option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="width:50px; font-size:16px;">Value: </td>
+                  <td class="basicPaddingAll"><input class="form-control" style="font-size:16px;" type="text" (keyup)="userFilter($event)"></td>
+                </tr>
+              </table>
+        </div> 
+      </div>
+  </div>
+
+  <!-- Field Display-->
+  <div class="dropdown">
+    <button (click)="switchShowFieldDisplay()" class="toolbarBtn">
+      <i class="fa fa-eye" aria-hidden="true"></i>&nbsp;Field Display</button>
+    <div [style.display]="showFieldDisplay ? 'block' : 'none'" class="dropdown-content">
+      <div class="alignCenter basicPaddingAll">
+        <table>
+          <tr>
+            <td class="basicPadding"><button type="button" class="btn btn-secondary btn-sm" (click)="showAllFields(true)">Show All</button></td>
+            <td class="basicPadding"><button type="button" class="btn btn-secondary btn-sm" (click)="showAllFields(false)">Hide All</button></td>
+          </tr>
+        </table>
+      </div>
+      <div *ngFor="let field of fields" class="basicPadding">
+          <table *ngIf="field.isKey===undefined || field.isKey===false">
+              <tr>
+                <td class="width30 basicPadding">
+                  
+                  <i class="fa fa-check-square-o" aria-hidden="true"
+                    *ngIf="tableSetting.fieldView[field.fieldId] === 'Y'"
+                    (click)="tableSetting.fieldView[field.fieldId] = ''"></i>
+                  <i class="fa fa-square-o" aria-hidden="true"
+                    *ngIf="tableSetting.fieldView[field.fieldId] !== 'Y'"
+                    (click)="tableSetting.fieldView[field.fieldId] = 'Y'"></i>
+                   
+                </td>
+                <td style="line-height:20px;">
+                  <app-field-label 
+                    [field]="field"
+                    [showTool]="false"
+                    [useSort]="false"
+                    [margin]="'5px'"
+                    [headerWidth]="'auto'"
+                    (update)="userUpdateField($event)"
+                    (delete)="userDeleteField($event)"
+                    (sort)="userSortByField($event)"
+                    (click)="tableSetting.fieldView[field.fieldId] = tableSetting.fieldView[field.fieldId]==='Y' ? '' : 'Y' ">
+                  </app-field-label>
+                </td>
+              </tr>
+          </table>
+      </div> <!-- END for field-->
+    </div> <!-- END dropdown-content -->
+  </div> <!-- END Field Display -->
+
+  
+</div> <!-- END tool bar-->
+
+<!-- ==================  TABLE  ===================================================-->
+<!-- ==================  TABLE  ===================================================-->
+
+
+
+<div id="tableContainer" (click)="hideAllDropdown()">
+    <table id="theTable">
+        <!-- header -->
+        <thead>
+          <tr>
+            <td class="cell-sm">#</td>
+            <td *ngFor="let field of fields" class="cell lightGreyBackground noPadding"
+              [style.display]="tableSetting.fieldView[field.fieldId]==='Y' ? 'table-cell' : 'none'" 
+            >
+              <app-field-label
+                [field]="field"
+                [showTool]="true"
+                [useSort]="false"
+                [margin]="'0px'"
+                [headerWidth]="'245px'"
+                (update)="userUpdateField($event)"
+                (delete)="userDeleteField($event)"
+                (sort)="userSortByField($event)"></app-field-label>
+            </td>
+          </tr>
+        </thead>
+        <!-- table body -->
+        <tbody>
+          <tr *ngFor="let recordObj of records; let i = index"
+            >
+              <td class="cell-sm" [style.height]="tableSetting.rowHeight">
+                <div class="alignCenter">{{ i + 1 }}</div>  
+              </td>
+
+              <!-- key field -->
+              <td class="cell" 
+                (click)="focusKey(recordObj)" 
+                (dblclick)="userViewRecord(recordObj)"
+                [style.border]="recordObj.focused ? '2px solid dodgerBlue' : '1px solid #999999'">
+                <div class="hiddenOverflow">{{ recordObj.keyValue }}</div>
+                <div *ngIf="recordObj.focused" class="alignRight">
+                  <i class="material-icons iconButton" style="font-size:20px" 
+                    ngbPopover="View this record" triggers="mouseenter:mouseleave" placement="bottom"
+                    (click)="userViewRecord(recordObj)">assignment</i>
+                  <i class="material-icons iconButton" style="font-size:20px" 
+                    ngbPopover="Edit this record" triggers="mouseenter:mouseleave" placement="bottom"
+                    (click)="userUpdateRecord(recordObj)">edit</i>
+                  <i class="material-icons iconButton" style="font-size:20px" 
+                    ngbPopover="Delete this record" triggers="mouseenter:mouseleave" placement="bottom"
+                    (click)="userDeleteRecord(recordObj)">delete_forever</i>
+                </div> 
+              </td>
+              
+              <!-- each field in a record -->
+              <td *ngFor="let fieldValue of recordObj.otherValues" class="cell"
+                (click)="focus(fieldValue)"
+                (dblclick)="userViewRecord(recordObj)"
+                [style.border]="fieldValue.focused ? '2px solid dodgerBlue' : '1px solid #999999'"
+                [style.display]="tableSetting.fieldView[fieldValue.fieldId]==='Y' ? 'table-cell' : 'none'"
+              >
+                <!-- type === select -->
+                <div *ngIf="fieldValue.dataType==='select'" class="hiddenOverflow borderRadius10"
+                  [style.background-color]="fieldValue.optionColor"
+                  [style.color]="fieldValue.optionColor ? 'white': 'black'"
+                  [style.text-align]="fieldValue.optionColor ? 'center': 'left'"
+                >
+                  {{ filterImg(fieldValue) }}&nbsp;
+                </div>
+                <!-- type === image -->
+                <div *ngIf="fieldValue.dataType==='image'">
+                  <div *ngIf="fieldValue.value && fieldValue.value.length > 0">
+                    <img height="50" alt="Has no image" [src]="fieldValue.value">
+                  </div>
+                  <div *ngIf="!fieldValue.value || fieldValue.value.length === 0">&nbsp;</div>
+                </div>
+                <!-- type === text or date -->
+                <div *ngIf="fieldValue.dataType==='text' || fieldValue.dataType==='date'" class="hiddenOverflow">
+                  {{ filterImg(fieldValue) }}&nbsp;
+                </div>
+
+                <!-- type === link -->
+                <div *ngIf="fieldValue.dataType==='link'" class="hiddenOverflow">
+                  {{ filterImg(fieldValue) }}&nbsp;
+                </div>
+
+                 <!-- type === check -->
+                <span *ngIf="fieldValue.dataType==='check' && fieldValue.value==='Y'">
+                  <i class="material-icons iconButton limeGreen" style="font-size:20px">check</i>
+                </span>
+
+                <div *ngIf="fieldValue.focused" class="alignRight">
+                  <i class="material-icons iconButton" style="font-size:20px" 
+                    ngbPopover="View this record" triggers="mouseenter:mouseleave" placement="bottom"
+                    (click)="userViewRecord(recordObj)">assignment</i>
+                  <i class="material-icons iconButton" style="font-size:20px" 
+                    ngbPopover="Edit this record" triggers="mouseenter:mouseleave" placement="bottom"
+                    (click)="userUpdateRecord(recordObj)">edit</i>
+                  <i class="material-icons iconButton" style="font-size:20px" 
+                    ngbPopover="Delete this record" triggers="mouseenter:mouseleave" placement="bottom"
+                    (click)="userDeleteRecord(recordObj)">delete_forever</i>
+                </div> 
+
+              </td> <!-- END each field in recored -->
+
+            </tr> <!-- END recordObj -->
+          
+          <!-- add record-->
+          <tr class="" id="addRecordDiv">
+            <td class="cell-sm add-item"><div (click)="userAddRecord()">+</div></td>
+          </tr>
+
+        </tbody> <!-- END table body -->
+    </table> <!-- END theTable -->
+</div> <!-- END table container -->
+
+<app-dialog (confirm) = "handleDialogConfirm($event)"></app-dialog>
+<app-field-editor [allOtherTables]="allOtherTables" (confirm) = "handleFieldConfirm($event)"></app-field-editor>
+<app-record-editor (confirm) = "handleRecordConfirm($event)"></app-record-editor>
+
+<div class="loading" *ngIf="showLoadiong"></div>

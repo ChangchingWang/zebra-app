@@ -1,0 +1,76 @@
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<div class="height100Percent"
+  [style.background-color]="space.spaceColor">
+
+  <!-- Space Header -->
+  <div id="spaceHeader">
+    <div class="floatLeft width140 whiteText">
+      <div id="homeIconContainer" class="basicPadding pointer" (click)="naviateTo('/home')"
+        ngbPopover="Go to all spaces" triggers="mouseenter:mouseleave" placement="right" >
+        <i class="fa fa-database iconButton" aria-hidden="true"></i>
+        Zebra
+      </div>
+    </div>
+    <div class="floatRight width140">
+      <span *ngIf="isLoggedIn()" class="whiteText">
+        <i class="fa fa-user-circle" aria-hidden="true" style="font-size:30px"></i> {{ getUserId() }}
+        <i class="material-icons iconButton" style="font-size:30px" 
+          ngbPopover="Logout" triggers="mouseenter:mouseleave" placement="left"
+          (click)="logout()">exit_to_app</i> 
+      </span>
+    </div>
+    <div class="center width450 alignCenter">
+      <span class="spaceName">{{ space.spaceName }}</span>
+    </div>
+  </div> <!-- END Space Header -->
+
+  <!-- Table icon buttons -->
+  <div class="whiteText" style="display:inline;">
+    <i class="material-icons iconButton"
+      ngbPopover="Add a new table" triggers="mouseenter:mouseleave" placement="right" 
+      (click)="userAddTable()">add_box</i>
+    <i class="material-icons iconButton"
+      ngbPopover="Edit current table" triggers="mouseenter:mouseleave" placement="right"
+      (click)="userUpdateTable()">edit</i>
+    <i class="material-icons iconButton"
+      ngbPopover="Delete current table" triggers="mouseenter:mouseleave" placement="right"
+      (click)="userDeleteTable()">delete_forever</i>
+  </div>
+  
+  <!-- Space Body : tabs and tables -->
+  <div id="spaceBody">
+      <ngb-tabset #tabs>
+          <ngb-tab>
+            <ng-template ngbTabTitle ><div (click)="clickTab(null)" class="blackText lineHeight08 text18">Welcome</div></ng-template>
+            <ng-template ngbTabContent>
+              <div class="whiteBackground">
+                <ngb-alert [dismissible]="false" type="info">Get started to access {{ space.spaceName }}.</ngb-alert>
+              </div>
+            </ng-template>
+          </ngb-tab>
+          <ngb-tab
+            *ngFor="let table of tables; let i = index;"
+            id="tab{{i}}">
+            <ng-template ngbTabTitle >
+              <div (click)="clickTab(table)" class="blackText lineHeight08 text18">{{table.tableName}}</div>
+            </ng-template>
+            <ng-template ngbTabContent>
+              <div class="whiteBackground height100Percent">
+                <app-table 
+                  [space]="space" 
+                  [table]="table" 
+                  [tables]="tables"
+                  [tableSetting]="tableSettings[table.tableId]"></app-table>
+              </div>
+            </ng-template>
+          </ngb-tab>
+      </ngb-tabset>
+  </div>
+
+</div>
+
+<app-dialog (confirm) = "handleDialogConfirm($event)"></app-dialog>
+<app-table-editor (confirm) = "handleTableEditorConfirm($event)"></app-table-editor>

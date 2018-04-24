@@ -1,0 +1,32 @@
+<table class="titleFrame pointer" 
+  [style.margin]="margin" 
+  [style.width]="headerWidth"
+  [class.blueBorder]="mark">
+    <tr>
+      <td width="20px" class="width20">
+        <div class="height20">
+          <span class="dodgerBlue"><i *ngIf="field.dataType === 'text'" class="material-icons iconButton" style="font-size:20px">text_fields</i></span>
+          <span class="dodgerBlue"><i *ngIf="field.dataType === 'date'" class="material-icons iconButton" style="font-size:20px">today</i></span>
+          <span class="dodgerBlue"><i *ngIf="field.dataType === 'check'" class="material-icons iconButton" style="font-size:20px">check_box</i></span>
+          <span class="dodgerBlue"><i *ngIf="field.dataType === 'select'" class="material-icons iconButton" style="font-size:20px">menu</i></span>
+          <span class="dodgerBlue"><i *ngIf="field.dataType === 'link'" class="material-icons iconButton" style="font-size:20px">link</i></span>  
+          <span class="dodgerBlue"><i *ngIf="field.dataType === 'image'" class="material-icons iconButton" style="font-size:20px">image</i></span>  
+        </div>
+      </td>
+      <td valign="middle" class="hiddenOverflow">
+        <div class="hiddenOverflow height20 lineHeight20 fontSize16 basicPadding" (click)="sortByThis()">{{ field.fieldName }}</div>
+      </td>
+      <td style="width:48px;">
+        <div *ngIf="showTool" class="height20">
+          <i class="material-icons iconButton" style="font-size:20px" 
+            ngbPopover="Edit this field" triggers="mouseenter:mouseleave" placement="bottom"
+            (click)="userUpdateField()">edit</i>
+          <span *ngIf="!field.isKey">
+            <i class="material-icons iconButton" style="font-size:20px" 
+              ngbPopover="Delete this field" triggers="mouseenter:mouseleave" placement="bottom"
+              (click)="userDeleteField()">delete_forever</i>
+          </span>
+        </div>
+      </td>
+    </tr>
+</table>

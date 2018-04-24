@@ -1,0 +1,124 @@
+html, body {
+  height: 100%;
+}
+
+.cell {
+  cursor: pointer;
+	border: 1px solid #999999;
+  width: 250px;
+  max-width: 250px;
+  min-width: 250px;
+  height: 15px;
+
+
+
+  font-size: 15px;
+
+  padding: 3px 3px 3px 3px;
+}
+.cell-space {
+  cursor: pointer;
+	border: 0px solid #999999;
+  width: 250px;
+  max-width: 250px;
+  min-width: 250px;
+  height: 20px;
+}
+
+.cellFrame {
+  table-layout: fixed;
+  width: 218px;
+  max-width: 218px;
+  min-width: 218px;
+  margin: 0px;
+}
+
+.cell-sm {
+  cursor: pointer;
+  border: 1px solid #999999;
+  width: 50px;
+  min-width: 50px;
+  text-align: center;
+
+  font-size: 15px;
+}
+.cell-md {
+  cursor: pointer;
+  border: 1px solid #999999;
+  width: 100px;
+  min-width: 100px;
+  max-width: 100px;
+  text-align: center;
+  font-size: 15px;
+}
+.add-item {
+  font-weight: bold;
+  text-align: center;
+}
+
+.toolbarBtn {
+  border: none;
+  color: black;
+  padding: 3px 3px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  background-color: white;
+  border-radius: 5px;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  width: auto;
+  background-color: white;
+  margin-right: 20px;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  border: 2px solid DimGray;
+  border-radius: 5px;
+  width: auto;
+  
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.4);
+  z-index: 2;
+}
+
+.displayTable {
+  display:table;
+  width:100%;
+  table-layout:fixed;
+}
+
+#tableContainer {
+  width: 100%;
+  height:80vh;
+  overflow-x: auto;
+}
+
+#toolbar {
+  display: block;
+  padding-top:5px;
+  padding-bottom:5px;
+}
+
+#theTable tbody {
+  display:block;
+  max-height:72vh;
+  overflow-y:auto;
+}
+#theTable thead, tbody tr {
+  display:table;
+  table-layout:fixed;
+}
+.filterInput {
+  border: 2px solid darkGrey; 
+  border-radius:5px;
+  width:100%;
+}

@@ -1,0 +1,22 @@
+<ng-template #selfDialog let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title"> {{ title }} </h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('cross')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>{{ msg }}</p>
+  </div>
+  <div *ngIf="showFooter" class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="c('cancel')">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="c('confirm')">Comfirm</button>
+  </div>
+</ng-template>
+
+<!-- for test
+<button class="btn btn-lg btn-outline-primary" (click)="open()">Launch demo modal</button>
+
+<hr>
+<pre>{{closeResult}}</pre>
+-->

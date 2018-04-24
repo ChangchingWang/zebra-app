@@ -1,0 +1,21 @@
+
+<div class="centerMiddleContainer">
+    <div class="greyBorderDiv width350">
+        <form class="form-signin" #f="ngForm" (ngSubmit)="signUp(f.value)">
+          <h2 class="form-signin-heading alignCenter">sign up</h2>
+          <div *ngIf="invalid" class="alert alert-danger">{{ errMsg }}</div>
+          <br>    
+          <label for="userId" class="sr-only">User ID</label>
+          <input type="text" id="userId" name="userId" ngModel class="form-control" placeholder="User ID" required autofocus>
+          <br>    
+          <label for="password" class="sr-only">Password</label>
+          <input type="password" id="password" name="password" ngModel class="form-control" placeholder="Password" required>
+          <br> 
+          <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
+          <br>
+          <button class="btn btn-lg btn-success btn-block" type="submit" (click)="naviateTo('/home')">Home</button>
+        </form>
+      </div>
+</div>
+
+

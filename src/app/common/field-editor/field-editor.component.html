@@ -1,0 +1,71 @@
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+<ng-template #selfDialog let-c="close" let-d="dismiss">
+  
+  <div class="modal-header">
+    <h4 class="modal-title"> {{ title }} </h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('cross')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  
+  <div class="modal-body">
+    <div id="bodyContainer" [style.height]="bodyContainerHeight">
+      <!-- Field Name -->
+      <div class="form-group">
+        <input type="text" class="form-control" [placeholder]="placeholder" [(ngModel)]="fieldName" autofocus>
+      </div>
+
+      <!-- Data Type -->
+      <div *ngIf="showDataType">
+        <select class="form-control" [(ngModel)]="dataType" (change)="userChangeDataType()">
+          <option *ngFor="let aType of dataTypes" [ngValue]="aType">
+            {{ aType.name }}
+          </option>
+        </select>
+      </div>
+      <hr>
+
+      <!-- Select Option -->
+      <div *ngIf="showSelectOption">
+          <div style="margin-bottom:10px;">
+            <button type="button" class="btn btn-light" (click)="userAddOption()">
+              <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Add An Option
+            </button>
+          </div>
+            
+          <div>
+            <div *ngFor="let option of options"
+              class="selectOption"
+              [style.background-color]="option.color">
+                <div style="float:left; padding-left: 10px; font-size:20px;line-height:25px;">{{ option.optionName }}</div>  
+                <div class="pointer" style="float:right; width:25px;" (click)="userDeleteOption(option)">
+                  <i class="fa fa-times" aria-hidden="true" ></i>
+                </div>
+            </div>
+          </div>
+      </div>
+      
+      <!-- Table Option -->
+      <div *ngIf="showTableOption && linkTable !== null">
+        <select class="form-control" [(ngModel)]="linkTable">
+          <option *ngFor="let aTable of allOtherTables" [ngValue]="aTable">{{ aTable.tableName }}</option>
+        </select>
+      </div>
+    </div> <!-- END bodyContainer-->
+  </div> <!-- END modal-body -->
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="c('cancel')">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="c('confirm')">Comfirm</button>
+  </div>
+</ng-template>
+
+<app-color-editor (confirm) = "handleOptionConfirm($event)"></app-color-editor>
+
+<!-- for test
+<button class="btn btn-lg btn-outline-primary" (click)="open()">Launch demo modal</button>
+
+<hr>
+<pre>{{closeResult}}</pre>
+-->

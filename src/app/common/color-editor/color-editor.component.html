@@ -1,0 +1,66 @@
+<ng-template #selfDialog let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title"> {{ title }} </h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('cross')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <input type="text" class="form-control" [placeholder]="placeholder" [(ngModel)]="name" autofocus>
+    </div>
+
+    <hr>
+
+    <ngb-alert type="cussuccess" [dismissible]="false">You can choose a color.</ngb-alert>
+
+    <div class="colorcheck dodgerBlue-bg" (click)="selectColor('dodgerBlue')">&nbsp;
+      <span class='whiteText boldText' *ngIf="isThisColor('dodgerBlue')">V</span></div>
+    
+    <div class="colorcheck cornflowerBlue-bg" (click)="selectColor('cornflowerBlue')">&nbsp; 
+      <span class='whiteText boldText' *ngIf="isThisColor('cornflowerBlue')">V</span></div>
+    
+    <div class="colorcheck darkOrange-bg" (click)="selectColor('darkOrange')">&nbsp; 
+      <span class='whiteText boldText' *ngIf="isThisColor('darkOrange')">V</span></div>
+        
+    <div class="colorcheck orangeRed-bg" (click)="selectColor('orangeRed')">&nbsp; 
+      <span class='whiteText boldText' *ngIf="isThisColor('orangeRed')">V</span></div>
+
+    <div class="colorcheck hotPink-bg" (click)="selectColor('hotPink')">&nbsp; 
+      <span class='whiteText boldText' *ngIf="isThisColor('hotPink')">V</span></div>
+    
+    <div class="colorcheck dimGrey-bg" (click)="selectColor('dimGrey')">&nbsp; 
+      <span class='whiteText boldText' *ngIf="isThisColor('dimGrey')">V</span></div>
+    
+    <div class="colorcheck yellowGreen-bg" (click)="selectColor('yellowGreen')">&nbsp; 
+      <span class='whiteText boldText' *ngIf="isThisColor('yellowGreen')">V</span></div>
+    
+    <div class="colorcheck forestGreen-bg" (click)="selectColor('forestGreen')">&nbsp; 
+      <span class='whiteText boldText' *ngIf="isThisColor('forestGreen')">V</span></div>
+    
+    <div class="colorcheck darkOrchid-bg" (click)="selectColor('darkOrchid')">&nbsp; 
+      <span class='whiteText boldText' *ngIf="isThisColor('darkOrchid')">V</span></div>
+
+    <div class="colorcheck chocolate-bg" (click)="selectColor('chocolate')">&nbsp; 
+      <span class='whiteText boldText' *ngIf="isThisColor('chocolate')">V</span></div>
+    
+    <div class="colorcheck saddleBrown-bg" (click)="selectColor('saddleBrown')">&nbsp; 
+      <span class='whiteText boldText' *ngIf="isThisColor('saddleBrown')">V</span></div>
+
+    <div class="colorcheck grey-bg" (click)="selectColor('grey')">&nbsp; 
+      <span class='whiteText boldText' *ngIf="isThisColor('grey')">V</span></div>
+    
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="c('cancel')">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="c('confirm')">Comfirm</button>
+  </div>
+</ng-template>
+
+<!-- for test
+<button class="btn btn-lg btn-outline-primary" (click)="open()">Launch demo modal</button>
+
+<hr>
+<pre>{{closeResult}}</pre>
+-->

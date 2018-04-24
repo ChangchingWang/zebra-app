@@ -1,0 +1,156 @@
+<ng-template #selfDialog let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title"> {{ title }} </h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('cross')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div id="tableContainer">
+        <table id="recordTable">
+            <!-- key field -->
+            <tr>
+              <th class="recordTh">
+                <div class="iconHolder">
+                  <i class="material-icons iconButton" style="font-size:20px">text_fields</i>
+                </div>
+                {{ keyName }}
+              </th>
+              <td class="recordTd">
+                <div *ngIf="purpose==='view'">{{ record.keyValue }}</div>
+                <div *ngIf="purpose==='update'">
+                  <div *ngIf="record.keyValue.length < 55">
+                    <input class="form-control" type="text" [(ngModel)]="record.keyValue">
+                  </div>
+                  <div *ngIf="record.keyValue.length >= 55">
+                    <textarea class="form-control" rows="5" (change)="keyTEChange($event)">{{ record.keyValue }}</textarea>
+                  </div>
+                </div>
+              </td>
+            </tr>
+      
+            <!-- other values -->
+          
+            <tr *ngFor="let fieldValue of record.otherValues">
+              <th class="recordTh">
+                <div class="iconHolder">
+                  <i *ngIf="fieldValue.dataType === 'text'" class="material-icons iconButton" style="font-size:20px">text_fields</i>
+                  <i *ngIf="fieldValue.dataType === 'check'" class="material-icons iconButton" style="font-size:20px">check_box</i>
+                  <i *ngIf="fieldValue.dataType === 'date'" class="material-icons iconButton" style="font-size:20px">today</i>
+                  <i *ngIf="fieldValue.dataType === 'select'" class="material-icons iconButton" style="font-size:20px">menu</i>
+                  <i *ngIf="fieldValue.dataType === 'link'" class="material-icons iconButton" style="font-size:20px">link</i>
+                  <i *ngIf="fieldValue.dataType === 'image'" class="material-icons iconButton" style="font-size:20px">image</i>
+                </div>
+                {{ fieldValue.fieldName }}
+              </th>
+              <td class="recordTd">
+                
+                <!-- VIEW -->
+                <div *ngIf="purpose==='view'"
+                  [class.optionDiv]="fieldValue.optionColor" [style.background-color]="fieldValue.optionColor">
+                    <span *ngIf="fieldValue.dataType === 'text' || fieldValue.dataType === 'date' || fieldValue.dataType === 'select'">
+                      {{ fieldValue.value }}
+                    </span>
+                    <span *ngIf="fieldValue.dataType === 'link'">
+                      {{ fieldValue.value }}
+                    </span>
+                    <span *ngIf="fieldValue.dataType === 'check' && fieldValue.value==='Y'">
+                      <i class="material-icons iconButton limeGreen" style="font-size:30px">check</i>
+                    </span>
+                    <div *ngIf="fieldValue.dataType === 'image' && fieldValue.value && fieldValue.value.length > 0">
+                      <img src="" height="200" alt="Image preview..." [src]="fieldValue.value">
+                    </div>
+                    <div *ngIf="fieldValue.dataType === 'image' && fieldValue.value && fieldValue.value.length === 0">&nbsp;</div>
+                </div>
+      
+                <!-- UPDATE -->
+                <div *ngIf="purpose==='update'">
+                  <!-- text -->
+                  <div *ngIf="fieldValue.dataType==='text'">
+                    <div *ngIf="fieldValue.value.length < 55">
+                      <input class="form-control" type="text" [(ngModel)]=fieldValue.value>
+                    </div>
+                    
+                    <div *ngIf="fieldValue.value.length >= 55">
+                      <textarea class="form-control" rows="5" (change)="otherTEChange($event, fieldValue)">{{ fieldValue.value }}</textarea>
+                    </div>
+                  </div>
+      
+                  <!-- check -->
+                  <div *ngIf="fieldValue.dataType==='check'">
+                    <i *ngIf="fieldValue.value === 'Y'" class="material-icons iconButton" style="font-size:30px"
+                      (click)="fieldValue.value=''">check_box</i>
+                    <i *ngIf="fieldValue.value !== 'Y'" class="material-icons iconButton" style="font-size:30px"
+                      (click)="fieldValue.value='Y'">check_box_outline_blank</i>
+                  </div>
+                  
+                  <!-- select -->
+                  <div *ngIf="fieldValue.dataType==='select'">
+                    <select class="form-control"
+                      [(ngModel)]="fieldValue.value" >
+                      <option *ngFor="let option of fieldOptions[fieldValue.fieldId]" 
+                        [value]="option.optionName">{{ option.optionName }}</option>
+                    </select>
+                  </div>
+      
+                  <!-- link-->
+                  <div *ngIf="fieldValue.dataType==='link'">
+                    <select class="form-control"
+                      [(ngModel)]="fieldValue.linkRecord" >
+                      <option *ngFor="let record of fieldOptions[fieldValue.fieldId]" 
+                        [ngValue]="record">{{ record.keyValue }}</option>
+                    </select>
+                  </div>
+      
+                  <!-- date -->
+                  <div *ngIf="fieldValue.dataType==='date'">
+                      <div class="form-group">
+                        <div class="input-group">
+                          <input class="form-control" placeholder="yyyy-mm-dd"
+                            name="dp" 
+                            [(ngModel)]="fieldValue.dateObj"
+                            ngbDatepicker 
+                            #d="ngbDatepicker">
+                          <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+                              <i class="material-icons iconButton" style="font-size:30px">today</i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+                  
+                  <!-- image -->
+                  <div *ngIf="fieldValue.dataType === 'image'">
+                    <input type="file" class="form-control-file fileInput" accept="image/*"
+                      (change)="showUploadedImg($event, fieldValue)"><br>
+                    <div *ngIf="fieldValue.value && fieldValue.value.length > 0">
+                      <img height="200" alt="Image preview..." [src]="fieldValue.value">
+                    </div>
+                    <br>
+                    <div *ngIf="fieldValue.value && fieldValue.value.length > 0">
+                      <button type="button" class="btn btn-primary" (click)="fieldValue.value=null">Delete this image</button>
+                    </div>
+                    
+                  </div>
+      
+                </div>
+              </td>
+            </tr>
+          
+          </table>
+    </div> <!-- END tableContainer -->
+  </div>
+
+  <div class="modal-footer" *ngIf="purpose==='update'">
+    <button type="button" class="btn btn-outline-dark" (click)="c('cancel')">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="c('confirm')">Comfirm</button>
+  </div>
+</ng-template>
+
+<!-- for test
+<button class="btn btn-lg btn-outline-primary" (click)="open()">Launch demo modal</button>
+
+<hr>
+<pre>{{closeResult}}</pre>
+-->

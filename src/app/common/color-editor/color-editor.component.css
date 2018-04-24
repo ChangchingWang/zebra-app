@@ -1,0 +1,17 @@
+.colorcheck {
+  float: left;
+  width: 35px;
+  height: 30px;
+  line-height:30px;
+  margin: 4px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: 2px solid rgba(0, 0, 0, .2);
+  text-align: left;
+  color: white;
+  padding-left:0px;
+}
+
+
+
+

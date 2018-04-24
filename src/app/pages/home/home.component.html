@@ -1,0 +1,66 @@
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<table width="100%">
+    <tr>
+      <td width="50%" class="alignLeft whiteText">
+      </td>
+      <td class="alignRight">
+        <span *ngIf="isLoggedIn()">
+          <i class="fa fa-user-circle" aria-hidden="true" style="font-size:30px"></i> {{ getUserId() }}
+          <i class="material-icons iconButton" style="font-size:30px" 
+            ngbPopover="Logout" triggers="mouseenter:mouseleave" placement="left"
+            (click)="logout()">exit_to_app</i> 
+        </span>
+      </td>
+    </tr>
+</table>
+
+  <div class="centerContainer greyBorderDiv width450">
+    <table style="margin: 0 auto;">
+      <!-- Add new space-->
+      <tr>
+        <td>
+          <div *ngIf="isReadMode()">
+            <div class="square whiteText " [style.background-color]="'gray'" (click)="alertReadOnly()">
+              <i class="material-icons iconButton" style="font-size:50px">add_box</i>
+            </div>
+          </div>
+          <div *ngIf="!isReadMode()">
+            <div class="square whiteText " [style.background-color]="'gray'" (click)="userAddSpace()">
+              <i class="material-icons iconButton" style="font-size:50px">add_box</i>
+            </div>
+          </div>
+          
+        </td>
+        <td>Add a new space</td>
+      </tr>
+
+      <!-- All spaces-->
+      <tr *ngFor="let space of spaces">
+        <td class="noPadding">
+          <div class="square whiteText" [style.background-color]='space.spaceColor'>
+            <div class="basicPadding noMargin">
+              <i class="fa fa-database iconButton" aria-hidden="true" style="font-size:40px" (click)="userEnterSpace(space)"></i>
+            </div>
+            <div class="blackText alignCenter noPadding noMargin gainsboro ">
+              <i class="material-icons iconButton" style="font-size:20px" 
+                ngbPopover="Enter" triggers="mouseenter:mouseleave"
+                (click)="userEnterSpace(space)">airplay</i>
+              <i *ngIf="!isReadMode()" class="material-icons iconButton" style="font-size:20px" 
+                ngbPopover="Edit" triggers="mouseenter:mouseleave"
+                (click)="userUpdateSpace(space)">edit</i>
+              <i *ngIf="!isReadMode()" class="material-icons iconButton" style="font-size:20px" 
+                ngbPopover="Delete" triggers="mouseenter:mouseleave"
+                (click)="userDeleteSpace(space)">delete_forever</i>
+            </div>
+          </div>
+        </td>
+
+        <td><div class="">{{ space.spaceName }}</div></td>
+      </tr>
+    </table>
+  </div>
+
+<app-dialog (confirm) = "handleDialogConfirm($event)"></app-dialog>
+<app-color-editor (confirm) = "handleSpaceEditorConfirm($event)"></app-color-editor>
