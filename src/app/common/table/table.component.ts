@@ -254,7 +254,15 @@ export class TableComponent implements OnInit {
       (field: any) => {
         // console.log('Table Component.updateField() --> fields = ', field);
         const index = this.fields.findIndex( aField => aField.fieldId === field.fieldId);
-        this.fields.splice(index, 1, field);
+        // update UI
+        this.fields.splice(index, 1, field); // field name
+        // records
+        for (const record of this.records) {
+          if (!field.isKey) {
+            const fieldValue = record.otherValues.find( aFieldValue => aFieldValue.fieldId === field.fieldId);
+            fieldValue.fieldName = field.fieldName;
+          }
+        }
       },
       (err) => {
         console.log('Table Component.updateField() --> ERROR: ', err);
@@ -283,20 +291,14 @@ export class TableComponent implements OnInit {
     // update UI
     const index = this.fields.findIndex( aField => aField.fieldId === this.deletingField.fieldId);
     this.fields.splice(index, 1);
+
+    // update UI record
     TableFunctions.deleteFieldInRecordsForUI(this.records, this.deletingField.fieldId);
     // update backend
     const userId = this.authService.getCurrentUser();
     this.fieldService.delete(userId, this.space.spaceId, this.table.tableId, this.deletingField.fieldId).subscribe(
       (field: any) => {
         // console.log('Table Component.deleteField() --> fields = ', field);
-        // load all records
-        const fieldIndex = this.fields.findIndex( aField => aField.fieldId === field.fieldId);
-        this.fields.splice(fieldIndex, 1);
-        for (const record of this.records) {
-          const fieldValuleIndex = record.otherValues.findIndex( aFieldValue => aFieldValue.fieldId === field.fieldId);
-          record.otherValues.splice(fieldValuleIndex, 1);
-        }
-        // this.listFields();
       },
       (err) => {
         console.log('Table Component.deleteField() --> ERROR: ', err);
@@ -350,7 +352,7 @@ export class TableComponent implements OnInit {
     const userId = this.authService.getCurrentUser();
     const spaceId = this.space.spaceId;
     const tableId = this.table.tableId;
-    const newRecord = {'keyValue': '', 'otherValues': []};
+    const newRecord = {'keyValue': '', 'recordId': 0, 'otherValues': []};
     for (const field of this.fields) {
       if (field.isKey) {
         continue;
@@ -360,15 +362,16 @@ export class TableComponent implements OnInit {
         'fieldName': field.fieldName,
         'dataType': field.dataType,
         'value': '',
-        'linkRecord': null
+        'linkRecord': undefined
       };
       newRecord.otherValues.push(otherValue);
     }
+    this.records.push(newRecord);
 
     this.recordService.create(userId, spaceId, tableId, newRecord).subscribe(
-      (resultRecord) => {
+      (resultRecord: any) => {
         // console.log('Table Component.userAddRecord() --> records = ', resultRecord);
-        this.records.push(resultRecord);
+        newRecord.recordId = resultRecord.recordId;
       },
       (err) => {
         console.log('Table Component.userAddRecord() --> ERROR: ', err);
@@ -409,7 +412,9 @@ export class TableComponent implements OnInit {
       updateObj.otherValues.push({
         fieldId: fieldValue.fieldId,
         value: fieldValue.value,
-        linkRecord: (fieldValue.linkRecord._id.length > 0 ? fieldValue.linkRecord._id : null)
+        linkRecord: (
+          fieldValue.linkRecord && fieldValue.linkRecord._id.length > 0
+          ? fieldValue.linkRecord._id : undefined)
       });
       // update UI: add optionColor
       if (fieldValue.dataType === 'select') {

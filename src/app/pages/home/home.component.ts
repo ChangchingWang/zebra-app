@@ -167,9 +167,7 @@ export class HomeComponent implements OnInit {
       .subscribe((space: any) => {
         // console.log('Home Component.deleteSpace() --> space = ', space);
         // update UI
-        const index = this.spaces.findIndex( aSpace => aSpace.sapceId === space.spaceId);
-        this.spaces.splice(index, 1);
-        // this.listSpaces();
+        this.listSpaces();
       });
   }
 

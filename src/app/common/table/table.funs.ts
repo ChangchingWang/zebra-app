@@ -33,7 +33,7 @@ export class TableFunctions {
           'fieldName': field.fieldName,
           'dataType': field.dataType,
           'value': '',
-          'linkRecord': {'_id': 0, 'keyValue': ''},
+          'linkRecord': {'_id': '', 'keyValue': ''},
           'optionColor': ''
         });
       } else {
@@ -70,11 +70,11 @@ export class TableFunctions {
             } else {
               // case1: link table has been deleted.
               // case2: this fieldValue has not select a linkRecord yet.
-              fieldValue.linkRecord = {'_id': 0, 'keyValue': ''};
+              fieldValue.linkRecord = {'_id': '', 'keyValue': ''};
               fieldValue.value = '';
             }
           } else {
-            fieldValue.linkRecord = {'_id': 0, 'keyValue': ''};
+            fieldValue.linkRecord = {'_id': '', 'keyValue': ''};
           }
         }
       }

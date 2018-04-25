@@ -11,23 +11,12 @@ import { HttpUtil } from '../../utils/http.util';
 @Injectable()
 export class SpaceService {
   private space: any; // used when navigate from home to space
-  // used when adding a new table, the UI reload by navigating to home, then navigating back to space
-  private showTableIndex = 0;
-
 
   constructor(
     private http: HttpClient,
     private config: ConfigService,
     private httpUtil: HttpUtil,
   ) {}
-
-  setShowTableIndex(value) {
-    this.showTableIndex = value;
-  }
-
-  getShowTableIndex() {
-    return this.showTableIndex;
-  }
 
   setSpace(space) {
     this.space = space;

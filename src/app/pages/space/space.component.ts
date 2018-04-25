@@ -78,14 +78,14 @@ export class SpaceComponent implements OnInit {
     // console.log('Space Component.listTables() --> ');
     const userId = this.authService.getCurrentUser();
     this.tableService.list(userId, this.space.spaceId).subscribe(
-      (tables) => {
+      (tables: any) => {
         // console.log('Space Component.listTables() --> tables = ', tables);
+        tables.sort(function (a, b) {
+          return a.tableId - b.tableId;
+        });
+
         this.tables = tables;
         this.makeTableSettings();
-        // after adding or deleting table, show specific tab.
-        const showTableIndex = this.spaceService.getShowTableIndex();
-        // this.tabs.select(`tab${showTableIndex}`); // TODO not working
-        this.spaceService.setShowTableIndex(0);
       },
       (err) => {
         console.log('Space Component.listTables() --> ERROR: ', err);
@@ -187,19 +187,27 @@ export class SpaceComponent implements OnInit {
 
   deleteTable() {
     // console.log('Space Component.deleteTable() --> tableId', this.showingTable.tableId);
+    // update UI
+    const deletingTableId = this.showingTable.tableId;
+    const index = this.tables.findIndex( aTable => aTable.tableId === deletingTableId);
+    this.tables.splice(index, 1);
+    if (index === this.tables.length) {
+      this.showingTable = null; // now showing Welcome
+    } else {
+      this.showingTable = this.tables[index];
+    }
+    // update server
     const userId = this.authService.getCurrentUser();
-    this.tableService.delete(userId, this.space.spaceId, this.showingTable.tableId).subscribe(
+    this.tableService.delete(userId, this.space.spaceId, deletingTableId).subscribe(
       (table: any) => {
         // console.log('Space Component.deleteTable() --> table = ', table);
-        const index = this.tables.findIndex( aTable => aTable.tableId === table.tableId);
-        this.tables.splice(index, 1);
+        // this.listTables();
       },
       (err) => {
         console.log('Space Component.deleteTable() --> ERROR: ', err);
       }
     );
   }
-
 
   // =================================================================
   // =================================================================

@@ -46,7 +46,7 @@ export class RecordService {
   }
 
   update(userId, spaceId, tableId, recordId, obj) {
-    // console.log('Record Service.update() --> {userId, spaceId, tableId, recordId, obj} = ', {userId, spaceId, tableId, recordId, obj});
+    console.log('Record Service.update() --> {userId, spaceId, tableId, recordId, obj} = ', {userId, spaceId, tableId, recordId, obj});
     return this.http
       .put(
         `${this.config.serverurl}${userId}/${spaceId}/${tableId}/record/${recordId}`,
