@@ -11,6 +11,7 @@ constructor(protected router: Router, protected authService: AuthService) { }
     if (this.authService.isLoggedIn()) {
       return true;
     }
+
     this.router.navigate(['/']);
     return false;
   }

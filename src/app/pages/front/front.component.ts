@@ -15,7 +15,10 @@ export class FrontComponent implements OnInit {
 
   ngOnInit() {
     if (this.authService.isLoggedIn()) {
-      const user = this.authService.getCurrentUser();
+      const userId = this.authService.getCurrentUser();
+      if (userId === 'guest') {
+        this.authService.setReadMode(true);
+      }
       this.router.navigate(['/home']);
     }
   }

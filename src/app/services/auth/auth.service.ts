@@ -11,7 +11,7 @@ import { ReplaySubject } from 'rxjs/RX';
 @Injectable()
 export class AuthService {
   // Ivan001
-  currentUser: any;
+  currentUserId: any;
   readMode: boolean;
 
   constructor(
@@ -20,8 +20,12 @@ export class AuthService {
     const token = localStorage.getItem('token');
     if (token) {
       const jwt = new JwtHelper();
-      this.currentUser = jwt.decodeToken(token).userId;
+      this.currentUserId = jwt.decodeToken(token).userId;
     }
+  }
+
+  setReadMode(value) {
+    this.readMode = value;
   }
 
   logIn(credentials, readMode) {
@@ -37,7 +41,7 @@ export class AuthService {
 
         localStorage.setItem('token', token);
         this.readMode = readMode;
-        this.currentUser = resObj.userId;
+        this.currentUserId = resObj.userId;
         // console.log('authService.login() --> currentUser = ', this.currentUser);
         return resObj.userId;
       })
@@ -58,7 +62,7 @@ export class AuthService {
 
         localStorage.setItem('token', token);
 
-        this.currentUser = resObj.userId;
+        this.currentUserId = resObj.userId;
         // console.log('authService.signup() --> currentUser = ', this.currentUser);
         return resObj.userId;
       })
@@ -70,7 +74,7 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem('token');
-    this.currentUser = null;
+    this.currentUserId = null;
   }
 
   isLoggedIn(): boolean {
@@ -78,7 +82,7 @@ export class AuthService {
   }
 
   getCurrentUser(): string {
-    return this.currentUser;
+    return this.currentUserId;
   }
 
   getToken(): string {
