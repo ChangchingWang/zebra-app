@@ -8,6 +8,7 @@ import { AuthService } from '../../services/auth/auth.service';
   styleUrls: ['./front.component.css']
 })
 export class FrontComponent implements OnInit {
+  isShowLoadiong = false;
 
   constructor(
     private router: Router,
@@ -21,6 +22,10 @@ export class FrontComponent implements OnInit {
       }
       this.router.navigate(['/home']);
     }
+  }
+
+  showLoading(value) {
+    this.isShowLoadiong = value;
   }
 
   login() {

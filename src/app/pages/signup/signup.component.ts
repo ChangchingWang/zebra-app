@@ -19,6 +19,7 @@ export class SignupComponent {
     this.authService.signup(credentials).subscribe(
       (userId) => {
         if (userId) {
+          this.authService.setReadMode(false);
           this.router.navigate(['/home']);
         } else {
           this.invalid = true;

@@ -1,12 +1,15 @@
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/css-spinning-spinners/1.1.0/load5.css" />
 <div class="centerMiddleContainer">
   <div class="greyBorderDiv width350">
     <div class="alignCenter"><h2>Zebra</h2></div>
     <br>
-    <button class="btn btn-lg btn-success btn-block" type="submit" (click)="loginWithGuest()">View Examples</button>
+    <button class="btn btn-lg btn-success btn-block" type="submit" (click)="showLoading(true);loginWithGuest();">View Examples</button>
     <br>
     <button class="btn btn-lg btn-primary btn-block" type="submit" (click)="login()">Login</button>
     <br>
     <button class="btn btn-lg btn-primary btn-block" type="submit" (click)="signup()">Signup</button>
   </div>
 </div>
+
+<div class="loading" *ngIf="isShowLoadiong"></div>
 
