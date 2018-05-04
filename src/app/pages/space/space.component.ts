@@ -31,6 +31,7 @@ export class SpaceComponent implements OnInit {
   space: any;
   tables: any;
   tableSettings: any = {};
+  isShowLoadiong = false;
 
   constructor(
     private router: Router,
@@ -39,12 +40,22 @@ export class SpaceComponent implements OnInit {
     private tableService: TableService,
     private fieldService: FieldService,
     private recordService: RecordService
-  ) { }
+  ) {}
 
   @ViewChild(DialogComponent) dialog: DialogComponent;
   @ViewChild(TableEditorComponent) tableEditor: TableEditorComponent;
   ngOnInit() {
-    this.space = this.spaceService.getSpace();
+    const selSpace = this.spaceService.getSpace();
+    if (selSpace === undefined) {
+      if (this.authService.getCurrentUser() === 'guest') {
+        this.authService.setReadMode(true);
+      }
+      this.space = {spaceColor: 'dodgerBlue'};
+      this.router.navigate(['/home']);
+      return;
+    }
+
+    this.space = selSpace;
     this.listTables();
   }
 
@@ -159,14 +170,17 @@ export class SpaceComponent implements OnInit {
 
   addTable(tableName) {
     // console.log('Space Component.addTable() --> ');
+    this.isShowLoadiong = true;
     const userId = this.authService.getCurrentUser();
     this.tableService.create(userId, this.space.spaceId, tableName).subscribe(
       (table: any) => {
         // console.log('Space Component.addTable() --> table = ', table);
         this.listTables(); // must list tables here as tables.push() not change UI
+        this.isShowLoadiong = false;
       },
       (err) => {
         console.log('Space Component.addTable() --> ERROR: ', err);
+        this.isShowLoadiong = false;
       }
     );
   }

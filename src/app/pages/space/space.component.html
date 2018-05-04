@@ -1,8 +1,9 @@
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/css-spinning-spinners/1.1.0/load5.css" />
 
-<div class="height100Percent"
+<div id="spaceContainer"
   [style.background-color]="space.spaceColor">
 
   <!-- Space Header -->
@@ -74,3 +75,4 @@
 
 <app-dialog (confirm) = "handleDialogConfirm($event)"></app-dialog>
 <app-table-editor (confirm) = "handleTableEditorConfirm($event)"></app-table-editor>
+<div class="loading" *ngIf="isShowLoadiong"></div>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
 
@@ -7,13 +7,23 @@ import { AuthService } from '../../services/auth/auth.service';
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css']
 })
-export class SignupComponent {
+export class SignupComponent implements OnInit {
   invalid: boolean;
   errMsg: string;
+
+  isShowLoadiong = false;
 
   constructor(
     private router: Router,
     private authService: AuthService) { }
+
+  ngOnInit() {
+
+  }
+
+  showLoading(value) {
+    this.isShowLoadiong = value;
+  }
 
   signUp(credentials) {
     this.authService.signup(credentials).subscribe(
@@ -23,12 +33,14 @@ export class SignupComponent {
           this.router.navigate(['/home']);
         } else {
           this.invalid = true;
+          this.isShowLoadiong = false;
         }
       },
       (error) => {
         console.log('signup component.signUp() --> ERROR: ', error);
         this.invalid = true;
         this.errMsg = error.msg;
+        this.isShowLoadiong = false;
       });
   }
 

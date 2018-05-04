@@ -1,7 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 html, body {
+  line-height:1;
   height: 100%;
   font-size: 0.8rem;
+  overflow-y:hidden;
 }
 
 .whiteText {color: white;}
@@ -78,6 +80,8 @@ div.center {margin:0 auto;}
 .width140 {width: 140px; max-width: 140px;}
 .width250 {width: 250px;}
 .width350 {width: 350px;}
+.width375 {width: 375px;}
+.width380 {width: 380px;}
 .width400 {width: 400px;}
 .width450 {width: 450px;}
 
@@ -90,6 +94,7 @@ div.center {margin:0 auto;}
 .overflowAuto {overflow: auto;}
 .overflowScroll {overflow: scroll;}
 .overflowXScroll {overflow-x: scroll;}
+.overflowYScroll {overflow-y: scroll;}
 
 .height20 {height: 20px;}
 

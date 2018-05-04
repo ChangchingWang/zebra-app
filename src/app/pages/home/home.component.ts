@@ -26,6 +26,8 @@ export class HomeComponent implements OnInit {
   spaces: any; // show all the spaces
   deleteSpaceId: String; // used when deleting a space
 
+  isShowLoadiong = false;
+
   constructor(
     private zone: NgZone,
     private router: Router,
@@ -37,6 +39,9 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    if (this.authService.getCurrentUser() === 'guest') {
+      this.authService.setReadMode(true);
+    }
     this.listSpaces();
   }
 
@@ -107,6 +112,7 @@ export class HomeComponent implements OnInit {
       'dodgerBlue'); // pass default value
   }
   addSpace(spaceName, spaceColor) {
+    this.isShowLoadiong = true;
     // console.log('Home Component.addSpace() --> {spaceName, spaceColor} = ', {spaceName, spaceColor} );
     const userId = this.authService.getCurrentUser();
     const obj = {
@@ -118,6 +124,7 @@ export class HomeComponent implements OnInit {
       // update UI
       this.spaces.push(space);
       this.listSpaces();
+      this.isShowLoadiong = false;
     });
   }
 

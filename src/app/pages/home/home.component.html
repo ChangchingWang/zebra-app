@@ -1,6 +1,7 @@
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/css-spinning-spinners/1.1.0/load5.css" />
 <table width="100%">
     <tr>
       <td width="50%" class="alignLeft whiteText">
@@ -16,7 +17,7 @@
     </tr>
 </table>
 
-  <div class="centerContainer greyBorderDiv width450">
+  <div class="centerContainer greyBorderDiv" style="width:100%; max-width:450px;">
     <table style="margin: 0 auto;">
       <!-- Add new space-->
       <tr>
@@ -64,3 +65,4 @@
 
 <app-dialog (confirm) = "handleDialogConfirm($event)"></app-dialog>
 <app-color-editor (confirm) = "handleSpaceEditorConfirm($event)"></app-color-editor>
+<div class="loading" *ngIf="isShowLoadiong"></div>

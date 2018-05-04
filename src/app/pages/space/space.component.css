@@ -1,6 +1,4 @@
-body {
-  line-height:1;
-}
+
 .spaceName {
   font-size: large;
   color: white;
@@ -14,4 +12,11 @@ a.nav-link { color: #FFFFFF; }
   padding-top: 2px; 
   font-size:23px; 
   line-height:23px;
+}
+#spaceContainer {
+  height:100%;
+}
+#spaceBody {
+  height: 100%;
+  overflow-y: auto;
 }

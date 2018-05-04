@@ -128,6 +128,11 @@ export class RecordEditorComponent implements OnInit {
     }
   }
 
+  deleteImage(fieldValue, f) {
+    f.value = '';
+    fieldValue.value = null;
+  }
+
   open() {
     this.modalService.open(this.selfDialog, { size: 'lg' }).result.then(
       (result) => {

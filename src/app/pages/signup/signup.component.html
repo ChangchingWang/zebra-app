@@ -1,4 +1,4 @@
-
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/css-spinning-spinners/1.1.0/load5.css" />
 <div class="centerMiddleContainer">
     <div class="greyBorderDiv width350">
         <form class="form-signin" #f="ngForm" (ngSubmit)="signUp(f.value)">
@@ -11,11 +11,11 @@
           <label for="password" class="sr-only">Password</label>
           <input type="password" id="password" name="password" ngModel class="form-control" placeholder="Password" required>
           <br> 
-          <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
+          <button class="btn btn-lg btn-primary btn-block" type="submit" (click)="showLoading(true);">Sign up</button>
           <br>
           <button class="btn btn-lg btn-success btn-block" type="submit" (click)="naviateTo('/home')">Home</button>
         </form>
       </div>
 </div>
-
+<div class="loading" *ngIf="isShowLoadiong"></div>
 

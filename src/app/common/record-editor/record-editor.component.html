@@ -122,14 +122,14 @@
                   
                   <!-- image -->
                   <div *ngIf="fieldValue.dataType === 'image'">
-                    <input type="file" class="form-control-file fileInput" accept="image/*"
+                    <input type="file" #f class="form-control-file fileInput" accept="image/*"
                       (change)="showUploadedImg($event, fieldValue)"><br>
                     <div *ngIf="fieldValue.value && fieldValue.value.length > 0">
                       <img height="200" alt="Image preview..." [src]="fieldValue.value">
                     </div>
                     <br>
                     <div *ngIf="fieldValue.value && fieldValue.value.length > 0">
-                      <button type="button" class="btn btn-primary" (click)="fieldValue.value=null">Delete this image</button>
+                      <button type="button" class="btn btn-primary" (click)="deleteImage(fieldValue, f);">Delete this image</button>
                     </div>
                     
                   </div>
